@@ -6,18 +6,34 @@ public class movPlataformas : MonoBehaviour
 {
     // Start is called before the first frame update
     public float speed = -3.0f;
+    private float speedSaved;
     public float plataformWidth = 7.0f;
     public float bounceDistance = 0.5f;
     bool collide;
     bool ChangeDirection=true;
     public LayerMask whatIsGround;
     public bool startRight;
-    private bool setUpGone;
     Vector3 Direction;
 
-    void Setup()
+    void Start()
     {
         
+
+        if (startRight)
+        {
+
+            ChangeDirection = true;
+            
+
+        }
+        else
+        {
+            ChangeDirection = false;
+            speed *=-1;
+        }
+
+        speedSaved = speed;
+
     }
 
   
@@ -31,36 +47,25 @@ public class movPlataformas : MonoBehaviour
         if (ChangeDirection)
         {
             Direction = Vector3.right;
+            speed = speedSaved;
         }
         if (!ChangeDirection) 
         {
             Direction = Vector3.left;
+            speed = speedSaved; 
         }
         collide = Physics.Raycast(transform.position, Direction, plataformWidth * 0.5f + bounceDistance, whatIsGround);
 
-        if (!setUpGone)
-        {
-            if (startRight)
-            {
-
-                ChangeDirection = true;
-
-
-            }
-            else
-            {
-                ChangeDirection = false;
-                
-            }
-        }
+    
 
 
         
         
         if (collide)
         {
-            setUpGone = true;
-            speed *= -1;
+            // por si interesa parar plataforma cuando llega a punto
+            speed = 0;
+            speedSaved *= -1;
             ChangeDirection = !ChangeDirection;
             
 

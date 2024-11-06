@@ -36,8 +36,7 @@ public class RigidCharacter : MonoBehaviour
     [Header("Keybinds")]
     public KeyCode jumpKey = KeyCode.Space;
     public KeyCode crouchKey = KeyCode.LeftShift;
-    private KeyCode rotateRight = KeyCode.D;
-    private KeyCode rotateLeft = KeyCode.A;
+    
 
 
     [Header("Collision Check")]
@@ -51,7 +50,7 @@ public class RigidCharacter : MonoBehaviour
     private bool grounded;
     private bool ladder;
     private RaycastHit ladderHit;
-    Vector3 direction;
+    public Vector3 direction;
     [Header("Slope Handling")]
     public float maxSlopeAngle;
     private RaycastHit slopeHit;
@@ -128,19 +127,19 @@ public class RigidCharacter : MonoBehaviour
         horizontalInput = Input.GetAxis("Horizontal");
         verticalInput = Input.GetAxis("Vertical");
 
-        if (Input.GetKey(rotateLeft))
+        if (horizontalInput < 0)
         {
             if (angleLeft < 90)
-                angleLeft += velGiro * Time.deltaTime * 90;
+                angleLeft += velGiro * Time.deltaTime * 60;
 
             transform.localEulerAngles = new Vector3(0, angleLeft, 0);
             direction = Vector3.left;
             angleRight = 90;
         }
-        else if (Input.GetKey(rotateRight))
+        else if (horizontalInput>0)
         {
             if (angleRight > -90)
-                angleRight -= velGiro * Time.deltaTime * 90;
+                angleRight -= velGiro * Time.deltaTime * 60;
             transform.localEulerAngles = new Vector3(0, angleRight, 0);
             direction = Vector3.right;
             angleLeft = -90;

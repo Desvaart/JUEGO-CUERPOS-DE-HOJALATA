@@ -1,7 +1,7 @@
 # TO DO LIST 
 
 ### Camera movement
-Basic Camera <i>(for gameplay)</i> <br>
+<b> Basic Camera <i>(for gameplay)</i> <br> </b>
 Long Shot Camera <i> (for specific scenes) </i> <br>
 Cinematic Camera <i>(for cinematics) </i> <br>
 
@@ -11,21 +11,21 @@ Cinematic Camera <i>(for cinematics) </i> <br>
 <b> Crouch <br> </b>
 Drag objects <br> 
 <b> Climb <br> </b>
-Interacte with objects <br>
+Interacte <br>
 <b> Hit <br> </b>
 
 
 ### Enemies
 
-Basic enemy NPC <br>
+<b> Basic enemy NPC <br> </b>
 Electroshock enemy <br>
 > Enforced enemy NPC <br>
 Long distance enemy NPC <br>
 
 ### Interactive objects
-
-<b> Horizontal platforms <br>
-<b> Vertical platforms<br>
+ 
+<b> Horizontal platforms <br> </b>
+<b> Vertical platforms<br> </b>
 Doors<br>
 Trapdoor<br>
 Cameras <br>

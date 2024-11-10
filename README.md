@@ -6,13 +6,13 @@ Long Shot Camera <i> (for specific scenes) </i> <br>
 Cinematic Camera <i>(for cinematics) </i> <br>
 
 ### Main character mechanics
-Movement<i>(left to right)</i> <br>
-Jump <br>
-Crouch <br>
-Drag objects <br>
-Climb <br>
+<b> Movement<i>(left to right)</i> <br> </b>
+<b> Jump <br> </b>
+<b> Crouch <br> </b>
+Drag objects <br> 
+<b> Climb <br> </b>
 Interacte with objects <br>
-Hit <br>
+<b> Hit <br> </b>
 
 
 ### Enemies
@@ -24,8 +24,8 @@ Long distance enemy NPC <br>
 
 ### Interactive objects
 
-Horizontal platforms <br>
-Vertical platforms<br>
+<b> Horizontal platforms <br>
+<b> Vertical platforms<br>
 Doors<br>
 Trapdoor<br>
 Cameras <br>

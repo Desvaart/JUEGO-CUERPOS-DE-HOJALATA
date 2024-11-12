@@ -8,8 +8,9 @@ public class RigidCharacter : MonoBehaviour
 
     public float walkSpeed;
     public float groundDrag;
-    private float angleRight;
-    private float angleLeft;
+    public float angleRight = -90;
+    public float angleLeft = 90;
+    private float angle;
     private float moveSpeed;
     public float velGiro;
 
@@ -28,8 +29,8 @@ public class RigidCharacter : MonoBehaviour
     bool readyToJump;
     [Header("Crouching")]
     public float crouchSpeed;
-    public float crouchYScale;
-    private float startYScale;
+    //public float crouchYScale;
+    //private float startYScale;
 
 
 
@@ -45,10 +46,11 @@ public class RigidCharacter : MonoBehaviour
     public LayerMask whatIsGround;
     public float distanceLadder;
     public float sphereCastRadius;
-    public LayerMask whatIsLadder;
+   
 
-    private bool grounded;
+    public bool grounded;
     private bool ladder;
+    private bool onEnemy;
     private RaycastHit ladderHit;
     public Vector3 direction;
     [Header("Slope Handling")]
@@ -77,9 +79,8 @@ public class RigidCharacter : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
         readyToJump = true;
-        startYScale = transform.localScale.y;
-        angleRight = -90;
-        angleLeft = -90;
+        //startYScale = transform.localScale.y;
+        
 
 
     }
@@ -97,14 +98,24 @@ public class RigidCharacter : MonoBehaviour
         //ground check
         RaycastHit hit;
         grounded = Physics.SphereCast(transform.position, 0.15f, Vector3.down, out hit, playerHeight * 0.5f + 0.2f, whatIsGround);
-        
+
+        onEnemy = Physics.Raycast(transform.position, Vector3.down, out RaycastHit enemyHit);
+
+        if (!enemyHit.transform.TryGetComponent(out Enemy enemy))
+        {
+            onEnemy = false;
+            
+        }
+
+
+
 
         //handle drag
 
         if (grounded)
             rb.drag = groundDrag;
 
-        else
+        else if(!OnSlope())
             rb.drag = 0;
 
        
@@ -117,9 +128,11 @@ public class RigidCharacter : MonoBehaviour
         MovePlayer();
         if (!ladder)
         {
-            rb.AddForce(Vector3.down * additionalGravity, ForceMode.Acceleration);
+            rb.AddForce(Vector3.down * additionalGravity, ForceMode.Acceleration);   
         }
         
+        rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y, 0f);
+
 
     }
     private void MyInput()
@@ -127,23 +140,7 @@ public class RigidCharacter : MonoBehaviour
         horizontalInput = Input.GetAxis("Horizontal");
         verticalInput = Input.GetAxis("Vertical");
 
-        if (horizontalInput < 0)
-        {
-            if (angleLeft < 90)
-                angleLeft += velGiro * Time.deltaTime * 60;
-
-            transform.localEulerAngles = new Vector3(0, angleLeft, 0);
-            direction = Vector3.left;
-            angleRight = 90;
-        }
-        else if (horizontalInput>0)
-        {
-            if (angleRight > -90)
-                angleRight -= velGiro * Time.deltaTime * 60;
-            transform.localEulerAngles = new Vector3(0, angleRight, 0);
-            direction = Vector3.right;
-            angleLeft = -90;
-        }
+        
 
 
         if (Input.GetKey(jumpKey) && readyToJump && grounded)
@@ -157,7 +154,9 @@ public class RigidCharacter : MonoBehaviour
 
         }
         //start crouch
-        if (Input.GetKeyDown(crouchKey))
+
+        /*
+         * if (Input.GetKeyDown(crouchKey))
         {
             transform.localScale = new Vector3(transform.localScale.x, crouchYScale, transform.localScale.z);
             rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
@@ -168,6 +167,7 @@ public class RigidCharacter : MonoBehaviour
             transform.localScale = new Vector3(transform.localScale.x, startYScale, transform.localScale.z);
             rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
         }
+        */
 
 
     }
@@ -229,23 +229,48 @@ public class RigidCharacter : MonoBehaviour
 
         if (OnSlope() && !exitingSlope)
         {
-            rb.AddForce(GetSlopeMoveDirection() * moveSpeed * 12f, ForceMode.Force);
+            
+            rb.AddForce(GetSlopeMoveDirection() * moveSpeed * 8f, ForceMode.Force);
+
+
 
 
         }
 
-        if (grounded)
+        if (grounded || onEnemy)
         {
             rb.AddForce(movement * moveSpeed * 10f, ForceMode.Force);
             resetJump();
         }
-        else if (!grounded)
+        else 
         {
             rb.AddForce(movement * moveSpeed * 10f * airMultiplier, ForceMode.Force);
 
             //turn gravity off while on Slope
             rb.useGravity = !OnSlope();
         }
+
+        if (horizontalInput < 0)
+        {
+            if (angle < angleLeft)
+                angle+= velGiro * Time.deltaTime * 100;
+            else
+                angle = angleLeft;
+            transform.localEulerAngles = new Vector3(0, angle, 0);
+            direction = Vector3.left;
+            
+        }
+        else if (horizontalInput > 0)
+        {
+            if (angle > angleRight)
+                angle -= velGiro * Time.deltaTime * 100;
+            else
+                angle = angleRight;
+            transform.localEulerAngles = new Vector3(0, angle, 0);
+            direction = Vector3.right;
+            
+        }
+
     }
     private void SpeedControl()
     {
@@ -285,10 +310,10 @@ public class RigidCharacter : MonoBehaviour
     }
     private bool OnSlope()
     {
-        if (Physics.Raycast(transform.position, Vector3.down, out slopeHit, playerHeight * 0.5f + 0.3f))
+        if (Physics.Raycast(transform.position, Vector3.down, out slopeHit, playerHeight * 0.5f + 0.4f,whatIsGround))
         {
-            float angle = Vector3.Angle(Vector3.up, slopeHit.normal);
-            return angle < maxSlopeAngle && angle != 0;
+            float angleSlope = Vector3.Angle(Vector3.up, slopeHit.normal);
+            return angleSlope < maxSlopeAngle && angleSlope != 0;
         }
         return false;
     }
@@ -326,4 +351,7 @@ public class RigidCharacter : MonoBehaviour
         rb.useGravity = true;
         climbing= false;
     }
+    public void LifeCharacter() { Debug.Log("me diste!!!"); }
+
+
 }

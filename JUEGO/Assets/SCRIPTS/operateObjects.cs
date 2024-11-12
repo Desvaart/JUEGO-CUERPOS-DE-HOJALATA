@@ -9,9 +9,11 @@ public class operateObjects : MonoBehaviour
 
     public float radius = 1.5f;
     public RigidCharacter rigidCharacter;
+    public KeyCode sensorKey = KeyCode.LeftControl;
+
     void Update()
     {
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetKeyDown(sensorKey))
         {
             Collider[] hitColliders = Physics.OverlapSphere(transform.position, radius);
             foreach (Collider hitCollider in hitColliders)
@@ -21,7 +23,7 @@ public class operateObjects : MonoBehaviour
                 {
 
                     
-                    Debug.Log("Heloooo");
+                    
                     hitCollider.SendMessage("Operate", SendMessageOptions.DontRequireReceiver);
                 }
                

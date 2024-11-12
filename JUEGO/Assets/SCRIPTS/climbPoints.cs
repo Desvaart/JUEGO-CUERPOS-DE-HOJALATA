@@ -25,7 +25,7 @@ public class climbPoints : MonoBehaviour
             }
            
         }
-        Debug.Log(waypointsIndex);
+        //Debug.Log(waypointsIndex);
 
         
 

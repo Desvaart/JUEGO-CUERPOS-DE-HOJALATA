@@ -28,7 +28,7 @@ public class colorChange : MonoBehaviour
 
     public void Operate()
     {
-        Debug.Log("Holaaa");
+        
         encendido =!encendido;
         
 

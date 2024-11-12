@@ -65,6 +65,7 @@ public class movPlataformas : MonoBehaviour
         {
             // por si interesa parar plataforma cuando llega a punto
             speed = 0;
+
             speedSaved *= -1;
             ChangeDirection = !ChangeDirection;
             

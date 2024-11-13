@@ -45,12 +45,14 @@ public class EnemyIA : MonoBehaviour
 
     [Header("Life")]
     public float life;
+    bool die;
 
     void Start()
     {
         timer = coolDown;
         timer2 = wanderingTimer;
         timer3 = chasingTimer;
+        die = false;
         
 
 
@@ -67,9 +69,17 @@ public class EnemyIA : MonoBehaviour
         playerInSightRange = Physics.SphereCast(transform.position, 0.1f, direction, out hitInfo, rangeChase, whatIsPlayer);
         playerAttackRange = Physics.SphereCast(transform.position, 0.1f, direction, out hitInfo, rangeAttack, whatIsPlayer);
 
-        if(!playerInSightRange && !playerAttackRange) Wandering();
-        if (playerInSightRange && !playerAttackRange) Chasing();
-        if (playerInSightRange && playerAttackRange) Attacking();
+        if (!die)
+        {
+            if (!playerInSightRange && !playerAttackRange) Wandering();
+            if (playerInSightRange && !playerAttackRange) Chasing();
+            if (playerInSightRange && playerAttackRange) Attacking();
+        }
+        else
+        {
+            StartCoroutine(Dying());
+        }
+        
 
         
 
@@ -223,8 +233,8 @@ public class EnemyIA : MonoBehaviour
 
     public void EndLife()
     {
-        //state = dying;
-        StartCoroutine(Dying());
+        die = true;
+        
     }
 
     private IEnumerator Dying()

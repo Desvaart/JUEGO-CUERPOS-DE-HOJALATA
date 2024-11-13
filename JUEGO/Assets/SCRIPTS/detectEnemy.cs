@@ -8,7 +8,7 @@ public class detectEnemy : MonoBehaviour
     float timer;
     public float timeAttack = 1f;
     public RigidCharacter rigidCharacter;
-    
+    public bool lookingEnemy;
     bool attack;
     bool coolDown;
     
@@ -24,34 +24,38 @@ public class detectEnemy : MonoBehaviour
     {
         // Debug.Log(timer);
 
-        if (Input.GetMouseButtonDown(0))
-        {
-            Collider[] hitColliders = Physics.OverlapSphere(transform.position, radius);
-            foreach (Collider hitCollider in hitColliders)
-            {
-                if (hitCollider.transform.TryGetComponent(out Enemy enemy))
-                {
 
-                    Vector3 point = hitCollider.transform.position - transform.position;
-                    if (Vector3.Dot(rigidCharacter.direction, point.normalized) > 0.5f)
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, radius);
+        foreach (Collider hitCollider in hitColliders)
+        {
+            if (hitCollider.transform.TryGetComponent(out Enemy enemy))
+            {
+
+                Vector3 point = hitCollider.transform.position - transform.position;
+
+                if (Vector3.Dot(rigidCharacter.direction, point.normalized) > 0.5f)
+                {
+                    lookingEnemy = true;
+
+                    if (Input.GetMouseButtonDown(0))
                     {
                         if (attack)
                         {
-                            
+
                             hitCollider.SendMessage("Life", SendMessageOptions.DontRequireReceiver);
                             timer = timeAttack;
                             attack = false;
 
                         }
-
                     }
 
+
                 }
+                else lookingEnemy = false;
+
             }
         }
-        
 
-        
         if (!attack) 
         { 
             if (timer > 0)
@@ -64,11 +68,9 @@ public class detectEnemy : MonoBehaviour
         {
             attack = true;
         }
-        
-
-        
 
     }
+
     
 }
 

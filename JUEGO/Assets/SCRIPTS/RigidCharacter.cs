@@ -45,18 +45,26 @@ public class RigidCharacter : MonoBehaviour
     public float playerWidth;
     public LayerMask whatIsGround;
     public float distanceLadder;
+    public float distanceForParry;
     public float sphereCastRadius;
    
 
     public bool grounded;
     private bool ladder;
+    private bool lookingEnemy;
     private bool onEnemy;
     private RaycastHit ladderHit;
     public Vector3 direction;
+    private detectEnemy detectE;
+
+
     [Header("Slope Handling")]
     public float maxSlopeAngle;
     private RaycastHit slopeHit;
     private bool exitingSlope;
+
+    [Header("Life")]
+    bool parry;
 
     private float horizontalInput;
     private float verticalInput;
@@ -79,8 +87,9 @@ public class RigidCharacter : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
         readyToJump = true;
+        detectE = GameObject.Find("CHARACTER").GetComponent<detectEnemy>();
         //startYScale = transform.localScale.y;
-        
+
 
 
     }
@@ -91,6 +100,8 @@ public class RigidCharacter : MonoBehaviour
         VelocityStateHandler();
         ClimbingStateHandler();
         WallCheck();
+        EnemyCheck();
+        
         //ladder check
 
         if (climbing) ClimbingMovement();
@@ -101,7 +112,7 @@ public class RigidCharacter : MonoBehaviour
 
         onEnemy = Physics.Raycast(transform.position, Vector3.down, out RaycastHit enemyHit);
 
-        if (!enemyHit.transform.TryGetComponent(out Enemy enemy))
+        if (!enemyHit.transform.TryGetComponent(out EnemyTop enemyTop))
         {
             onEnemy = false;
             
@@ -140,7 +151,11 @@ public class RigidCharacter : MonoBehaviour
         horizontalInput = Input.GetAxis("Horizontal");
         verticalInput = Input.GetAxis("Vertical");
 
-        
+        if (lookingEnemy)
+        {
+            if (Input.GetMouseButtonDown(1)) parry = true;
+        }
+        if (Input.GetMouseButtonUp(1) || Input.GetMouseButtonDown(0) || !lookingEnemy) parry = false;
 
 
         if (Input.GetKey(jumpKey) && readyToJump && grounded)
@@ -334,6 +349,21 @@ public class RigidCharacter : MonoBehaviour
         }
 
     }
+    private void EnemyCheck()
+    {
+        
+
+        lookingEnemy = Physics.SphereCast(transform.position, 0.2f, direction, out RaycastHit enemyHit, playerWidth * 0.5f + distanceForParry);
+
+        if (Physics.SphereCast(transform.position, 0.2f, direction, out enemyHit, playerWidth * 0.5f + distanceForParry))
+        {
+            if (!enemyHit.transform.TryGetComponent(out Enemy enemy))
+            {
+                lookingEnemy = false;
+            }
+        }
+
+    }
     private void StartClimbing()
     {
         rb.useGravity = false;
@@ -351,7 +381,14 @@ public class RigidCharacter : MonoBehaviour
         rb.useGravity = true;
         climbing= false;
     }
-    public void LifeCharacter() { Debug.Log("me diste!!!"); }
+   
+
+
+    public void LifeCharacter() { 
+
+        if(parry) Debug.Log("bloqueo!!!");
+        else Debug.Log("me diste!!!"); 
+    }
 
 
 }

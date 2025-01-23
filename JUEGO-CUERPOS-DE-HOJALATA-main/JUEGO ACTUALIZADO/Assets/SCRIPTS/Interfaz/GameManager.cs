@@ -5,6 +5,7 @@ public class GameManager : MonoBehaviour
     public GameObject mainMenuPanel; // Panel del menú principal
 
     private bool isGameStarted = false; // Indica si el juego ha comenzado
+    internal static object _gm;
 
     void Start()
     {

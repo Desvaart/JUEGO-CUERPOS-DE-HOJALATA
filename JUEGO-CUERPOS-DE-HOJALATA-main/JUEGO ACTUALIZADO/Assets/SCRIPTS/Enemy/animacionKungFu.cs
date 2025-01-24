@@ -18,10 +18,11 @@ public class animacionKungFu : MonoBehaviour
     bool arranca;
     bool golpe;
     bool die;
-    bool conversation1;
-    bool conversation2;
-    bool conversation3;
+    public bool conversation1;
+    public bool conversation2;
+    public bool conversation3;
     public GameObject collider;
+    public bool talk;
     public detectCharacter detectC;
     private RigidCharacter rigidChar;
 
@@ -53,9 +54,13 @@ public class animacionKungFu : MonoBehaviour
             if (!conversation1)
             {
                 sisterAnimator.SetBool("talk", true);
+                talk = true;
                 conversation1 = true;
             }
-            else sisterAnimator.SetBool("talk", false);
+            else { 
+                sisterAnimator.SetBool("talk", false);
+                talk = false;
+            }
 
         }
 
@@ -82,8 +87,14 @@ public class animacionKungFu : MonoBehaviour
             if (!conversation2)
             {
                 sisterAnimator.SetBool("talk", true);
+                talk = true;
                 conversation2 = true;
-            } else sisterAnimator.SetBool("talk", false);
+            }
+            else
+            {
+                sisterAnimator.SetBool("talk", false);
+                talk = false;
+            }
 
             if (timer2 > 0)
             {
@@ -110,9 +121,13 @@ public class animacionKungFu : MonoBehaviour
             if (!conversation3)
             {
                 sisterAnimator.SetBool("talk", true);
+                talk = true;
                 conversation3 = true;
             }
-            else sisterAnimator.SetBool("talk", false);
+            else { 
+                sisterAnimator.SetBool("talk", false); 
+                talk = false;
+            }
 
             StartCoroutine(Dying());
             detectC.cargado = false;

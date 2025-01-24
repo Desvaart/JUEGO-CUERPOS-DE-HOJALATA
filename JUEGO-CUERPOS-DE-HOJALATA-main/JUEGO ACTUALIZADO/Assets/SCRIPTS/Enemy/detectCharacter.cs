@@ -5,12 +5,13 @@ using UnityEngine;
 public class detectCharacter : MonoBehaviour
 {
     public bool cargado;
-    public RigidCharacter rigidCharacter;
+    private RigidCharacter rigidCharacter;
 
     // Start is called before the first frame update
     void Start()
     {
         cargado = true;
+        rigidCharacter = GameObject.Find("CHARACTER").GetComponent<RigidCharacter>();
     }
 
    

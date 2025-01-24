@@ -15,25 +15,45 @@ public class Dialogue : MonoBehaviour
     private bool isPlayerInRange;
     private bool didDialogueStart;
     private int lineIndex;
+    private animacionKungFu animK;
+
+    void Start()
+    {
+        animK = GameObject.Find("maquina_kungfu").GetComponent<animacionKungFu>();
+    }
 
     // Update is called once per frame
     void Update()
     {
-        if (isPlayerInRange && Input.GetKeyDown(KeyCode.F))
+        if ( animK.talk)
         {
-            if(!didDialogueStart){
+            dialoguePanel.SetActive(true);
+
+            if (!didDialogueStart)
+             
+            {
                 StartDialogue();
             }
-        else if (dialogueText.text == dialogueLines[lineIndex])
+
+
+
+            else if (dialogueText.text == dialogueLines[lineIndex])
             {
                 NextDialogueLine();
+                
             }
-            else
-            {
-                StopAllCoroutines();
-                dialogueText.text = dialogueLines[lineIndex];
-            }
+            //else 
+            //{
+            //    StopAllCoroutines();
+            //    dialogueText.text = dialogueLines[lineIndex];
+            //}
         }
+
+        if (dialogueText.text == dialogueLines[lineIndex] && !animK.talk)
+        {
+            dialoguePanel.SetActive(false);
+        }
+
 
     }
 
@@ -43,7 +63,7 @@ public class Dialogue : MonoBehaviour
     dialoguePanel.SetActive(true);
     dialogueMark.SetActive(false);
     lineIndex = 0;
-        Time.timeScale = 0f;
+        //Time.timeScale = 0f;
         StartCoroutine(ShowLine());
     }
 
@@ -56,10 +76,10 @@ public class Dialogue : MonoBehaviour
         }
         else
         {
-            didDialogueStart=false;
+            //didDialogueStart=false;
             dialoguePanel.SetActive(false);
-            dialogueMark.SetActive(true);
-            Time.timeScale = 1f;
+            dialogueMark.SetActive(false);
+            //Time.timeScale = 1f;
         }
     }
 
@@ -74,23 +94,23 @@ public class Dialogue : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-        isPlayerInRange = true;
-            dialogueMark.SetActive(true);
-            Debug.Log("Se puede iniciar un dialogo");
-    }
-    }
+    //private void OnTriggerEnter(Collider collision)
+    //{
+    //    if (collision.gameObject.CompareTag("Player"))
+    //    {
+    //    isPlayerInRange = true;
+    //        dialogueMark.SetActive(true);
+    //        Debug.Log("Se puede iniciar un dialogo");
+    //}
+    //}
 
-    private void OnTriggerExit(Collider collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            isPlayerInRange = false;
-            dialogueMark.SetActive(false);
-            Debug.Log("No se puede iniciar un dialogo");
-        }
-    }
+    //private void OnTriggerExit(Collider collision)
+    //{
+    //    if (collision.gameObject.CompareTag("Player"))
+    //    {
+    //        isPlayerInRange = false;
+    //        dialogueMark.SetActive(false);
+    //        Debug.Log("No se puede iniciar un dialogo");
+    //    }
+    //}
 }

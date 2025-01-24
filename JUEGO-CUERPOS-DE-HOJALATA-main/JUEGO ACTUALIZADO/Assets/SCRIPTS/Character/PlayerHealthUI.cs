@@ -56,7 +56,7 @@ public class PlayerHealthUI : MonoBehaviour
         if (currentLives == 0)
         {
             isGameOver = true; // Marca el juego como terminado
-            StartCoroutine(RestartGameWithDelay(5f)); // Llama a la corrutina con 5 segundos de retraso
+            StartCoroutine(RestartGameWithDelay(3f)); // Llama a la corrutina con 5 segundos de retraso
         }
     }
 

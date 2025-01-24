@@ -91,13 +91,13 @@ public class movPlataformas : MonoBehaviour
 
         }
     }
-    private void OnCollisionExit(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            collision.gameObject.transform.SetParent(null);
-        }
+   // private void OnCollisionExit(Collision collision)
+   // {
+   //     if (collision.gameObject.CompareTag("Player"))
+   //     {
+   //         collision.gameObject.transform.SetParent(null);
+   //     }
 
-    }
+   // }
 
 }

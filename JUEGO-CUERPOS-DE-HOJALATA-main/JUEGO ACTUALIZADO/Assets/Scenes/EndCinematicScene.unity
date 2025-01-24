@@ -222,8 +222,8 @@ Transform:
   m_GameObject: {fileID: 21308300}
   serializedVersion: 2
   m_LocalRotation: {x: 0.0000002384186, y: 0.7071068, z: -0.7071068, w: -0.0000002384186}
-  m_LocalPosition: {x: 2, y: 31, z: 960}
-  m_LocalScale: {x: 200.18391, y: 1, z: 106.54244}
+  m_LocalPosition: {x: 2, y: 1, z: 960}
+  m_LocalScale: {x: 210.79366, y: 1.053, z: 112.189186}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -501,7 +501,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   videoPlayer: {fileID: 1378697393}
-  mainMenuSceneName: MainMenu
+  audioSource: {fileID: 0}
+  nextSceneName: enemy_setup
 --- !u!1 &1497079701
 GameObject:
   m_ObjectHideFlags: 0

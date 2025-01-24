@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+
+    public AudioClip hitSound; // Arrastra el sonido aquí en el Inspector
+    private AudioSource audioSource;
+
     public EnemyIA enemyIA;
     public animacionKungFu animK;
     public bool basicEnemy;
@@ -12,7 +16,8 @@ public class Enemy : MonoBehaviour
 
     void Start()
     {
-       
+        audioSource = GetComponent<AudioSource>();
+
     }
 
     public void Life()
@@ -23,6 +28,8 @@ public class Enemy : MonoBehaviour
             enemyIA.life--;
             //Debug.Log(enemyIA.life);
             if (enemyIA.life == 0) enemyIA.SendMessage("EndLife", SendMessageOptions.DontRequireReceiver);
+            audioSource.PlayOneShot(hitSound);
+
         }
         else if (kungFu)
         {

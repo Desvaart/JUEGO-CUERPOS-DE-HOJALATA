@@ -14,6 +14,7 @@ public class GameOverController : MonoBehaviour
     public void ExitToMenu()
     {
         Time.timeScale = 1f; // Restablece el tiempo normal
-        SceneManager.LoadScene("MainMenu"); // Cambia "MainMenu" al nombre exacto de tu escena principal
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
     }
 }
